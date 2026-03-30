@@ -1,0 +1,48 @@
+name: Deploy Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: "Release to deploy"
+        required: true
+        type: choice
+        options:
+          - v1.0.0
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout release
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.release }}
+
+      - name: Simulate deployment
+        run: |
+          echo "============================================"
+          echo "  Deploying release: ${{ github.event.inputs.release }}"
+          echo "============================================"
+          echo ""
+          echo "Step 1/4 - Validating release tag..."
+          sleep 2
+          echo "✅ Tag ${{ github.event.inputs.release }} found"
+          echo ""
+          echo "Step 2/4 - Building application..."
+          sleep 2
+          echo "✅ Build successful"
+          echo ""
+          echo "Step 3/4 - Running health checks..."
+          sleep 2
+          echo "✅ Health checks passed"
+          echo ""
+          echo "Step 4/4 - Deploying to production..."
+          sleep 2
+          echo "✅ Deployment complete"
+          echo ""
+          echo "============================================"
+          echo "  Release ${{ github.event.inputs.release }} deployed successfully!"
+          echo "  Deployed by: ${{ github.actor }}"
+          echo "  Timestamp: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          echo "============================================"
